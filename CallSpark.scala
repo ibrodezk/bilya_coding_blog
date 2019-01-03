@@ -54,9 +54,9 @@ object CallSpark {
     }
 
 	def startSpark(arguments: Array[String]): Unit = {
-        val spark = setupSparkLauncher()
+        val sl = setupSparkLauncher()
         // Launches a sub-process that will start the configured Spark application.
-        val proc = spark.launch
+        val proc = sl.launch
         val inputStreamReaderRunnable = new InputStreamReaderRunnable(proc.getInputStream, "spark stdout stream")
         val inputThread = new Thread(inputStreamReaderRunnable, "LogStreamReader input")
         inputThread.start()
@@ -83,18 +83,18 @@ object CallSpark {
         if(parsedInput.overrideQuorum){
             sl.addSparkArg("--conf", parsedInput.quorum)
         }
-        addAppArgs(spark)
-        return spark
+        addAppArgs(sl)
+        return sl
     }
 
-    private def addAppArgs(spark: SparkLauncher) = {
-        spark.addAppArgs("--cluster")
-        spark.addAppArgs(parsedInput.cluster)
-        spark.addAppArgs("--devEnv")
-        spark.addAppArgs(parsedInput.devEnv)
+    private def addAppArgs(sl: SparkLauncher) = {
+        sl.addAppArgs("--cluster")
+        sl.addAppArgs(parsedInput.cluster)
+        sl.addAppArgs("--devEnv")
+        sl.addAppArgs(parsedInput.devEnv)
         if(parsedInput.appParam != null) {
-            spark.addAppArgs("--appParam")
-            spark.addAppArgs(parsedInput.appParam)
+            sl.addAppArgs("--appParam")
+            sl.addAppArgs(parsedInput.appParam)
         }
     }
 
