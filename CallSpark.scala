@@ -69,7 +69,7 @@ object CallSpark {
     
     private def setupSparkLauncher(): SparkLauncher = {
         val env: util.HashMap[String, String] = new util.HashMap[String, String]
-        env.put("HADOOP_CONF_DIR", slParams.confPath)
+        env.put("HADOOP_CONF_DIR", parsedInput.confPath)
         var sl = new SparkLauncher(env).
                setVerbose(true). // setting output
                setJavaHome("path/to/java"). 
@@ -89,12 +89,12 @@ object CallSpark {
 
     private def addAppArgs(spark: SparkLauncher) = {
         spark.addAppArgs("--cluster")
-        spark.addAppArgs(slParams.cluster)
+        spark.addAppArgs(parsedInput.cluster)
         spark.addAppArgs("--devEnv")
-        spark.addAppArgs(slParams.devEnv)
-        if(SLParams.appParam != null) {
+        spark.addAppArgs(parsedInput.devEnv)
+        if(parsedInput.appParam != null) {
             spark.addAppArgs("--appParam")
-            spark.addAppArgs(SLParams.appParam)
+            spark.addAppArgs(parsedInput.appParam)
         }
     }
 
